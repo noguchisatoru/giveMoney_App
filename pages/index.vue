@@ -1,33 +1,47 @@
 <template>
   <section class="container">
     <div>
-      <app-logo/>
+      <AppLogo/>
       <h1 class="title">
-        givemoneyapp
+        ログイン画面
       </h1>
-      <h2 class="subtitle">
-        Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
-      </div>
+      <table>
+        <tr><th>メールアドレス</th>
+        <td><input type="email" v-model.trim="email"></td></tr>
+        <tr><th>パスワード</th>
+        <td><input type="password" v-model.trim="password"></td></tr>
+      </table>
+      <button v-on:click="doLogin">ログイン</button>
+      <nuxt-link to="/sigup">新規登録はこちら</nuxt-link>      
     </div>
   </section>
 </template>
 
 <script>
+import firebase from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
 
 export default {
+  data() {
+    return {
+      email: "",
+      password: ""
+    }
+  },
+
   components: {
     AppLogo
+  },
+
+  methods: {
+    doLogin() {
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        .then(user => {
+          this.$router.push("/test")
+        }).catch((error) => {
+          alert(error)
+        })
+    }
   }
 }
 </script>
@@ -45,7 +59,7 @@ export default {
   font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
   display: block;
   font-weight: 300;
-  font-size: 100px;
+  font-size: 50px;
   color: #35495e;
   letter-spacing: 1px;
 }
