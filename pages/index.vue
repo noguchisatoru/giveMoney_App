@@ -12,7 +12,10 @@
         <td><input type="password" v-model.trim="password"></td></tr>
       </table>
       <button v-on:click="doLogin">ログイン</button>
-      <nuxt-link to="/sigup">新規登録はこちら</nuxt-link>      
+      <nuxt-link to="/signup">新規登録はこちら</nuxt-link> 
+    </div>
+    <div>
+      <button v-on:click="add">データベースに追加</button>
     </div>
   </section>
 </template>
@@ -20,6 +23,7 @@
 <script>
 import firebase from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
+import { ADD_USER, REMOVE_USER, INIT_USER } from '../store/action-types';
 
 export default {
   data() {
@@ -33,14 +37,30 @@ export default {
     AppLogo
   },
 
+  computed: {
+    users () {
+      return this.$store.getters.getUsers;
+    },
+  },
+
   methods: {
-    doLogin() {
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+    async doLogin() {
+      await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
-          this.$router.push("/test")
+          this.$router.push("/dashboard")
         }).catch((error) => {
           alert(error)
         })
+    },
+
+    add(){
+      this.$store.dispatch(ADD_USER, "abc");
+      firebase.firestore().collection('users').get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          let data = doc.data();
+          console.log(data.name);
+        })
+      })
     }
   }
 }
@@ -76,4 +96,3 @@ export default {
   padding-top: 15px;
 }
 </style>
-
