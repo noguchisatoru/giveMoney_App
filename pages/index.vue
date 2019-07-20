@@ -56,12 +56,16 @@ export default {
     add(){
       this.$store.dispatch(ADD_USER, "abc");
       firebase.firestore().collection('users').get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          let data = doc.data();
-          console.log(data.name);
+        const data = querySnapshot.docs.map(doc => {
+          console.log("aaaaaa");
+          return doc.data();
         })
       })
     }
+  },
+
+  created (){
+    this.$store.dispatch(INIT_USER);
   }
 }
 </script>

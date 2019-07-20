@@ -1,6 +1,6 @@
 import Vuex from 'vuex'
 import firebase from '../plugins/firebase'
-import { vuexfireMutations, firebaseAction } from 'vuexfire'
+import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import { ADD_USER, REMOVE_USER, INIT_USER } from './action-types'
 
 const db = firebase.firestore()
@@ -15,10 +15,10 @@ export default () =>
       ...vuexfireMutations
     },
     actions: {
-      [INIT_USER]: firebaseAction(({ bindFirebaseRef }) => {
-        bindFirebaseRef('users', usersRef, { wait: true })
+      [INIT_USER]: firestoreAction(context => {
+        return context.bindFirestoreRef('users',usersRef);
       }),
-      [ADD_USER]: firebaseAction((context, text) => {
+      [ADD_USER]: firestoreAction((context, text) => {
         usersRef.add({
             name: text,
             test: "test"
@@ -28,7 +28,7 @@ export default () =>
             console.error("no",error);
         });
       }),
-      [REMOVE_USER]: firebaseAction((context, key) => {
+      [REMOVE_USER]: firestoreAction((context, key) => {
         usersRef.child(key).remove()
       })
     },
