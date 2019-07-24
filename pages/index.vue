@@ -57,7 +57,6 @@ export default {
       this.$store.dispatch(ADD_USER, "abc");
       firebase.firestore().collection('users').get().then((querySnapshot) => {
         const data = querySnapshot.docs.map(doc => {
-          console.log("aaaaaa");
           return doc.data();
         })
       })
