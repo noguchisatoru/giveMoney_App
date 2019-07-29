@@ -18,10 +18,11 @@ export default () =>
       [INIT_USER]: firestoreAction(context => {
         return context.bindFirestoreRef('users',usersRef);
       }),
-      [ADD_USER]: firestoreAction((context, text) => {
+      [ADD_USER]: firestoreAction((context, payload) => {
         usersRef.add({
-            name: text,
-            test: "test"
+            userName: payload.userName,
+            uId: payload.uId,
+            balance: 1000
         }).then(function(docRef){
             console.log("yes",docRef.id);
         }).catch(function(error){

@@ -2,21 +2,33 @@
   <section class="container">
     <div>
       <AppLogo/>
-      <h1 class="title">
+      <h1 class="title" v-if="isActive">
         ログイン画面
       </h1>
+      <h1 class="title" v-else>
+        新規登録
+      </h1>
       <table>
+        <tr v-show="!isActive"><th>ユーザ名</th>
+        <td><input type="text" v-model.trim="username"></td></tr>
         <tr><th>メールアドレス</th>
         <td><input type="email" v-model.trim="email"></td></tr>
         <tr><th>パスワード</th>
         <td><input type="password" v-model.trim="password"></td></tr>
       </table>
-      <button v-on:click="doLogin">ログイン</button>
-      <nuxt-link to="/signup">新規登録はこちら</nuxt-link> 
+      <div v-if="isActive">
+        <button v-on:click="doLogin">ログイン</button>
+        <br>
+        <a href="#" @click.prevent.stop="changeDisplay">新規登録はこちら</a> 
+      </div>
+      <div v-else>
+        <button v-on:click="addUser">新規登録</button>
+        <br>
+        <a href="#" @click.prevent.stop="changeDisplay">ログインはこちら</a>
+      </div>
+      <small>&copy; 2019 〇〇</small>
     </div>
-    <div>
-      <button v-on:click="add">データベースに追加</button>
-    </div>
+ 
   </section>
 </template>
 
@@ -28,8 +40,11 @@ import { ADD_USER, REMOVE_USER, INIT_USER } from '../store/action-types';
 export default {
   data() {
     return {
+      username: "",
       email: "",
-      password: ""
+      password: "",
+
+      isActive: true
     }
   },
 
@@ -46,20 +61,28 @@ export default {
   methods: {
     async doLogin() {
       await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        .then(user => {
-          this.$router.push("/dashboard")
-        }).catch((error) => {
-          alert(error)
-        })
+      .then(user => {
+        this.$router.push("/dashboard")
+      }).catch((error) => {
+        alert(error)
+      })
     },
 
-    add(){
-      this.$store.dispatch(ADD_USER, "abc");
-      firebase.firestore().collection('users').get().then((querySnapshot) => {
-        const data = querySnapshot.docs.map(doc => {
-          return doc.data();
-        })
+    async addUser(){
+      await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+      .then(user => {
+        var user = firebase.auth().currentUser;
+        this.$store.dispatch(ADD_USER, {userName: this.username, uId: user.uid});
+        alert("登録完了"+user.email);
+        this.$router.push("/dashboard")
       })
+      .catch(error =>{
+        alert(error);
+      })
+    },
+
+    changeDisplay(){
+      this.isActive = !this.isActive;
     }
   },
 
