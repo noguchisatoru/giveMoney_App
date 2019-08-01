@@ -18,15 +18,13 @@
       </table>
       <div v-if="isActive">
         <button v-on:click="doLogin">ログイン</button>
-        <br>
         <a href="#" @click.prevent.stop="changeDisplay">新規登録はこちら</a> 
       </div>
       <div v-else>
         <button v-on:click="addUser">新規登録</button>
-        <br>
         <a href="#" @click.prevent.stop="changeDisplay">ログインはこちら</a>
       </div>
-      <small>&copy; 2019 〇〇</small>
+      <Footer/>
     </div>
  
   </section>
@@ -35,6 +33,7 @@
 <script>
 import firebase from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
+import Footer from '~/components/Footer.vue'
 import { ADD_USER, REMOVE_USER, INIT_USER } from '../store/action-types';
 
 export default {
@@ -49,7 +48,8 @@ export default {
   },
 
   components: {
-    AppLogo
+    AppLogo,
+    Footer
   },
 
   computed: {
@@ -60,25 +60,28 @@ export default {
 
   methods: {
     async doLogin() {
-      await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-      .then(user => {
-        this.$router.push("/dashboard")
-      }).catch((error) => {
-        alert(error)
-      })
-    },
+      try{
+        const user = await firebase.auth().signInWithEmailAndPassword(this.email, this.password);
+          if(user){
+            this.$router.push("/dashboard");
+          }
+      } catch (e) {
+          alert(e);
+        }
+      },
 
     async addUser(){
-      await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-      .then(user => {
-        var user = firebase.auth().currentUser;
-        this.$store.dispatch(ADD_USER, {userName: this.username, uId: user.uid});
-        alert("登録完了"+user.email);
-        this.$router.push("/dashboard")
-      })
-      .catch(error =>{
-        alert(error);
-      })
+      try{
+        const user = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password);
+          if(user){
+            let userdata = firebase.auth().currentUser;
+            this.$store.dispatch(ADD_USER, {userName: this.username, uId: userdata.uid});
+            alert("登録完了" + userdata.email);
+            this.$router.push("/dashboard")
+          }
+      } catch (e) {
+        alert(e);
+      }
     },
 
     changeDisplay(){
