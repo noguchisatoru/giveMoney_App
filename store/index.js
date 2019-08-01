@@ -18,17 +18,21 @@ export default () =>
       [INIT_USER]: firestoreAction(context => {
         return context.bindFirestoreRef('users',usersRef);
       }),
-      [ADD_USER]: firestoreAction((context, userdata) => {
-        usersRef.add({
+      [ADD_USER]: firestoreAction(async (context, userdata) => {
+        try{
+          const newData = await usersRef.add({
+
             userName: userdata.userName,
             uId: userdata.uId,
             balance: 1000
-        }).then(function(docRef){
-            console.log("yes",docRef.id);
-        }).catch(function(error){
-            console.error("no",error);
-        });
+            
+          });
+          console.log("yes", newData.id);
+        }catch(e){
+          alert(e);
+        }
       }),
+
       [REMOVE_USER]: firestoreAction((context, key) => {
         usersRef.child(key).remove()
       })
