@@ -2,19 +2,21 @@
   <section class="container">
     <div>
       <AppLogo/>
-      <h1 class="title" v-if="isActive">
-        ログイン画面
-      </h1>
-      <h1 class="title" v-else>
-        新規登録
-      </h1>
+      <h1 class="title" v-if="isActive">ログイン画面</h1>
+      <h1 class="title" v-else>新規登録</h1>
       <table>
-        <tr v-show="!isActive"><th>ユーザ名</th>
-        <td><input type="text" v-model.trim="username"></td></tr>
-        <tr><th>メールアドレス</th>
-        <td><input type="email" v-model.trim="email"></td></tr>
-        <tr><th>パスワード</th>
-        <td><input type="password" v-model.trim="password"></td></tr>
+        <tr v-show="!isActive">
+          <th>ユーザ名</th>
+          <td><input type="text" v-model.trim="username"></td>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <td><input type="email" v-model.trim="email"></td>
+        </tr>
+        <tr>
+          <th>パスワード</th>
+          <td><input type="password" v-model.trim="password"></td>
+        </tr>
       </table>
       <div v-if="isActive">
         <button v-on:click="doLogin">ログイン</button>
@@ -26,7 +28,6 @@
       </div>
       <Footer/>
     </div>
- 
   </section>
 </template>
 
