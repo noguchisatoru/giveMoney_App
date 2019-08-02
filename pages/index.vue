@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import firebase from '~/plugins/firebase'
+import { auth } from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
 import Footer from '~/components/Footer.vue'
 import { ADD_USER, REMOVE_USER, INIT_USER } from '../store/action-types';
@@ -61,7 +61,7 @@ export default {
   methods: {
     async doLogin() {
       try{
-        const user = await firebase.auth().signInWithEmailAndPassword(this.email, this.password);
+        const user = await auth.signInWithEmailAndPassword(this.email, this.password);
           if(user){
             this.$router.push("/dashboard");
           }
@@ -72,9 +72,9 @@ export default {
 
     async addUser(){
       try{
-        const user = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password);
+        const user = await auth.createUserWithEmailAndPassword(this.email, this.password);
           if(user){
-            let userdata = firebase.auth().currentUser;
+            let userdata = auth.currentUser;
             this.$store.dispatch(ADD_USER, {userName: this.username, uId: userdata.uid});
             alert("登録完了" + userdata.email);
             this.$router.push("/dashboard")

@@ -7,14 +7,14 @@
 </template>
 
 <script>
-import firebase from '~/plugins/firebase'
+import { auth } from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
 import { ADD_USER, REMOVE_USER, INIT_USER } from '../store/action-types';
 
 export default {
   data() {
     return {
-      useruid: firebase.auth().currentUser.uid
+      useruid: auth.currentUser.uid
     }
   },
 

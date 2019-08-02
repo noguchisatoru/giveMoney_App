@@ -1,10 +1,9 @@
 import Vuex from 'vuex'
-import firebase from '../plugins/firebase'
+import { db } from '~/plugins/firebase'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import { ADD_USER, REMOVE_USER, INIT_USER } from './action-types'
 
-const db = firebase.firestore()
-const usersRef = db.collection('users')
+const usersRef = db.collection('users');
 
 export default () =>
   new Vuex.Store({

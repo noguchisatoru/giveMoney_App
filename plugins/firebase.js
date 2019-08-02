@@ -12,8 +12,11 @@ var firebaseConfig = {
 
 // Initialize Firebase
 if(!firebase.apps.length){
-  firebase.initializeApp(firebaseConfig);
+ firebase.initializeApp(firebaseConfig);
 }
 
-export default firebase
+const db = firebase.firestore()
+const auth = firebase.auth()
+
+export {db, auth}
  
