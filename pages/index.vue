@@ -74,7 +74,7 @@ export default {
       try{
         const user = await auth.createUserWithEmailAndPassword(this.email, this.password);
           if(user){
-            let userdata = auth.currentUser;
+            const userdata = auth.currentUser;
             this.$store.dispatch(ADD_USER, {userName: this.username, uId: userdata.uid});
             alert("登録完了" + userdata.email);
             this.$router.push("/dashboard")
