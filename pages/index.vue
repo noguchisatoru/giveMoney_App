@@ -20,11 +20,11 @@
       </table>
       <div v-if="isActive">
         <button v-on:click="doLogin">ログイン</button>
-        <a href="#" @click.prevent.stop="changeDisplay">新規登録はこちら</a> 
+        <button v-on:click="changeDisplay">新規登録はこちら</button> 
       </div>
       <div v-else>
         <button v-on:click="addUser">新規登録</button>
-        <a href="#" @click.prevent.stop="changeDisplay">ログインはこちら</a>
+        <button v-on:click="changeDisplay">ログインはこちら</button>
       </div>
       <Footer/>
     </div>
