@@ -35,7 +35,7 @@
 import { auth } from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
 import Footer from '~/components/Footer.vue'
-import { ADD_USER, REMOVE_USER, INIT_USER } from '../store/action-types';
+import {INIT_USER, SET_USERDATA, ADD_USER, REMOVE_USER} from '../store/action-types';
 
 export default {
   data() {

@@ -7,9 +7,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { auth } from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
-import { ADD_USER, REMOVE_USER, INIT_USER } from '../store/action-types';
+import { INIT_USER, INIT_BALANCE,SET_USERDATA, ADD_USER, REMOVE_USER}  from '../store/action-types';
 
 export default {
   data() {
@@ -25,7 +26,7 @@ export default {
   computed: {
     users () {
       return this.$store.getters.getUsers;
-    },
+    }
   },
 
   methods: {

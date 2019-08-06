@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 import { db } from '~/plugins/firebase'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
-import { ADD_USER, REMOVE_USER, INIT_USER } from './action-types'
+import { INIT_USER, INIT_BALANCE, SET_USERDATA, ADD_USER, REMOVE_USER } from './action-types'
 
 const usersRef = db.collection('users');
 const balanceRef = db.collection('balanceData');
@@ -43,8 +43,5 @@ export default () =>
       [REMOVE_USER]: firestoreAction((context, key) => {
         usersRef.child(key).remove()
       })
-    },
-    getters: {
-      getUsers: state => state.users
     }
   })
