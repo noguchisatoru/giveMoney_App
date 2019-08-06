@@ -1,7 +1,11 @@
 <template>
-    <section>
-        <h1>dashboard</h1>
-        <p>useruid:{{ useruid }}</p>
+   <section class="container">
+      <div>
+        <AppLogo/>
+        <p>{{ user.userName }} さんようこそ</p>
+        <p>残高：{{ user.balance }}</p>
+        <h1>ユーザ一覧</h1>
+      </div>
     </section>
     
 </template>
