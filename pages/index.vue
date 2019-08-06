@@ -72,7 +72,7 @@ export default {
           if(user){
             const userdata = auth.currentUser;
             this.$store.dispatch(ADD_USER, {userName: this.username, uId: userdata.uid});
-            this.$store.dispatch(SET_USERDATA, userdata.uid);
+            await this.$store.dispatch(SET_USERDATA, userdata.uid);
             alert("登録完了" + userdata.email);
             this.$router.push("/dashboard")
           }
