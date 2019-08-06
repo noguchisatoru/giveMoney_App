@@ -30,16 +30,14 @@ export default () =>
       }),
       [ADD_USER]: firestoreAction(async (context, userdata) => {
         try{
-          const newData = await usersRef.add({
+          await usersRef.doc(userdata.uId).set({
 
             userName: userdata.userName,
-            uId: userdata.uId,
             
           });
 
-          await balanceRef.add({
+          await balanceRef.doc(userdata.uId).set({
 
-            userId: newData.id,
             balance: 1000
             
           });
