@@ -23,10 +23,8 @@ export default {
     AppLogo
   },
 
-  computed: {
-    users () {
-      return this.$store.getters.getUsers;
-    }
+ computed: {
+    ...mapGetters(["user", "users", "balance"])
   },
 
   methods: {
