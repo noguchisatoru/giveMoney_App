@@ -58,7 +58,7 @@ export default {
       try{
         const user = await auth.signInWithEmailAndPassword(this.email, this.password);
           if(user){
-            this.$store.dispatch(SET_USERDATA, auth.currentUser.uid);
+            await this.$store.dispatch(SET_USERDATA, auth.currentUser.uid);
             this.$router.push("/dashboard");
           }
       } catch (e) {

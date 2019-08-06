@@ -33,8 +33,8 @@ export default {
     }
   },
 
-   async mounted(){
-    await this.$store.dispatch(INIT_USER);
+   mounted(){
+    this.$store.dispatch(INIT_USER);
     this.$store.dispatch(INIT_BALANCE);
   }
 }
@@ -42,7 +42,7 @@ export default {
 
 <style>
 .container {
-  min-height: 100vh;
+  min-height: 50vh;
   display: flex;
   justify-content: center;
   align-items: center;
