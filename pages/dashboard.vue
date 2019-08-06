@@ -33,8 +33,9 @@ export default {
     }
   },
 
-  created (){
-    this.$store.dispatch(INIT_USER);
+   async mounted(){
+    await this.$store.dispatch(INIT_USER);
+    this.$store.dispatch(INIT_BALANCE);
   }
 }
 </script>
