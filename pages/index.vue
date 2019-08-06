@@ -53,12 +53,6 @@ export default {
     Footer
   },
 
-  computed: {
-    users () {
-      return this.$store.getters.getUsers;
-    },
-  },
-
   methods: {
     async doLogin() {
       try{

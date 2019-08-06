@@ -4,11 +4,14 @@ import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import { ADD_USER, REMOVE_USER, INIT_USER } from './action-types'
 
 const usersRef = db.collection('users');
+const balanceRef = db.collection('balanceData');
 
 export default () =>
   new Vuex.Store({
     state: {
-      users: []
+      user: null,
+      users: [],
+      balances: []
     },
     mutations: {
       ...vuexfireMutations
@@ -23,10 +26,15 @@ export default () =>
 
             userName: userdata.userName,
             uId: userdata.uId,
+            
+          });
+
+          await balanceRef.add({
+
+            userId: newData.id,
             balance: 1000
             
           });
-          console.log("yes", newData.id);
         }catch(e){
           alert(e);
         }
