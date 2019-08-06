@@ -5,6 +5,23 @@
         <p>{{ user.userName }} さんようこそ</p>
         <p>残高：{{ user.balance }}</p>
         <h1>ユーザ一覧</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>ユーザ名</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="username in users" :key="username.userName">
+              <th>{{ username.userName }}</th>
+              <th><button>walletを見る</button></th>
+              <th><button>送る</button></th>
+            </tr>  
+          </tbody>
+        </table>
+        <Footer/>
       </div>
     </section>
     
@@ -14,6 +31,7 @@
 import { mapGetters } from 'vuex'
 import { auth } from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
+import Footer from '~/components/Footer.vue'
 import { INIT_USER, INIT_BALANCE,SET_USERDATA, ADD_USER, REMOVE_USER}  from '../store/action-types';
 
 export default {
@@ -24,7 +42,8 @@ export default {
   },
 
   components: {
-    AppLogo
+    AppLogo,
+    Footer
   },
 
  computed: {
