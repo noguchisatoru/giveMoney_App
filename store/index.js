@@ -28,6 +28,9 @@ export default () =>
       [INIT_USER]: firestoreAction(context => {
         return context.bindFirestoreRef('users',usersRef);
       }),
+      [INIT_BALANCE]: firestoreAction(context => {
+        return context.bindFirestoreRef('balances',balanceRef);
+      }),
       [ADD_USER]: firestoreAction(async (context, userdata) => {
         try{
           await usersRef.doc(userdata.uId).set({
@@ -45,7 +48,19 @@ export default () =>
           alert(e);
         }
       }),
-
+      [SET_USERDATA]:async ({commit}, uid) => {
+        try{
+          const nameData = await usersRef.doc(uid).get();
+          const balanceData = await balanceRef.doc(uid).get();
+          
+          commit("setUser", {
+            userName: nameData.data().userName,
+            balance: balanceData.data().balance
+          });
+        }catch(e){
+          console.log(e);
+        }
+      },
       [REMOVE_USER]: firestoreAction((context, key) => {
         usersRef.child(key).remove()
       })
