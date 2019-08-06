@@ -14,7 +14,15 @@ export default () =>
       balances: []
     },
     mutations: {
-      ...vuexfireMutations
+      ...vuexfireMutations,
+      setUser(state, user){
+        state.user = user;
+      }
+    },
+    getters: {
+      user: state => state.user,
+      users: state => state.users,
+      balances: state => state.balances
     },
     actions: {
       [INIT_USER]: firestoreAction(context => {
