@@ -58,6 +58,7 @@ export default {
       try{
         const user = await auth.signInWithEmailAndPassword(this.email, this.password);
           if(user){
+            this.$store.dispatch(SET_USERDATA, auth.currentUser.uid);
             this.$router.push("/dashboard");
           }
       } catch (e) {
@@ -71,6 +72,7 @@ export default {
           if(user){
             const userdata = auth.currentUser;
             this.$store.dispatch(ADD_USER, {userName: this.username, uId: userdata.uid});
+            this.$store.dispatch(SET_USERDATA, userdata.uid);
             alert("登録完了" + userdata.email);
             this.$router.push("/dashboard")
           }
