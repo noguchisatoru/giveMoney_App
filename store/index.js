@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 import { db } from '~/plugins/firebase'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import { INIT_USER, INIT_BALANCE, SET_USERDATA, ADD_USER, REMOVE_USER } from './action-types'
+import { DEFAULT_WALLET_AMOUNT } from './definition'
 
 const usersRef = db.collection('users');
 const balanceRef = db.collection('balanceData');
@@ -41,7 +42,7 @@ export default () =>
 
           await balanceRef.doc(userdata.uId).set({
 
-            balance: 1000
+            balance: DEFAULT_WALLET_AMOUNT
             
           });
         }catch(e){
