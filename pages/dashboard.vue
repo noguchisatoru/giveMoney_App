@@ -1,15 +1,38 @@
 <template>
-    <section>
-        <h1>dashboard</h1>
-        <p>useruid:{{ useruid }}</p>
+   <section class="container">
+      <div>
+        <AppLogo/>
+        <p>{{ user.userName }} さんようこそ</p>
+        <p>残高：{{ user.balance }}</p>
+        <h1>ユーザ一覧</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>ユーザ名</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="username in users" :key="username.userName">
+              <th>{{ username.userName }}</th>
+              <th><button>walletを見る</button></th>
+              <th><button>送る</button></th>
+            </tr>  
+          </tbody>
+        </table>
+        <Footer/>
+      </div>
     </section>
     
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { auth } from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
-import { ADD_USER, REMOVE_USER, INIT_USER } from '../store/action-types';
+import Footer from '~/components/Footer.vue'
+import { INIT_USER, INIT_BALANCE,SET_USERDATA, ADD_USER, REMOVE_USER}  from '../store/action-types';
 
 export default {
   data() {
@@ -19,13 +42,12 @@ export default {
   },
 
   components: {
-    AppLogo
+    AppLogo,
+    Footer
   },
 
-  computed: {
-    users () {
-      return this.$store.getters.getUsers;
-    },
+ computed: {
+    ...mapGetters(["user", "users", "balance"])
   },
 
   methods: {
@@ -34,15 +56,16 @@ export default {
     }
   },
 
-  created (){
+   mounted(){
     this.$store.dispatch(INIT_USER);
+    this.$store.dispatch(INIT_BALANCE);
   }
 }
 </script>
 
 <style>
 .container {
-  min-height: 100vh;
+  min-height: 50vh;
   display: flex;
   justify-content: center;
   align-items: center;

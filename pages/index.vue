@@ -35,7 +35,7 @@
 import { auth } from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
 import Footer from '~/components/Footer.vue'
-import { ADD_USER, REMOVE_USER, INIT_USER } from '../store/action-types';
+import {INIT_USER, SET_USERDATA, ADD_USER, REMOVE_USER} from '../store/action-types';
 
 export default {
   data() {
@@ -53,17 +53,12 @@ export default {
     Footer
   },
 
-  computed: {
-    users () {
-      return this.$store.getters.getUsers;
-    },
-  },
-
   methods: {
     async doLogin() {
       try{
         const user = await auth.signInWithEmailAndPassword(this.email, this.password);
           if(user){
+            await this.$store.dispatch(SET_USERDATA, auth.currentUser.uid);
             this.$router.push("/dashboard");
           }
       } catch (e) {
@@ -77,6 +72,7 @@ export default {
           if(user){
             const userdata = auth.currentUser;
             this.$store.dispatch(ADD_USER, {userName: this.username, uId: userdata.uid});
+            await this.$store.dispatch(SET_USERDATA, userdata.uid);
             alert("登録完了" + userdata.email);
             this.$router.push("/dashboard")
           }
