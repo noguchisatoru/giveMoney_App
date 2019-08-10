@@ -51,12 +51,13 @@ export default () =>
       }),
       [SET_USERDATA]:async ({commit}, uid) => {
         try{
-          const nameData = await usersRef.doc(uid).get();
-          const balanceData = await balanceRef.doc(uid).get();
-          
+          const userdata = await Promise.all([
+            usersRef.doc(uid).get(),
+            balanceRef.doc(uid).get()
+          ]);
           commit("setUser", {
-            userName: nameData.data().userName,
-            balance: balanceData.data().balance
+            userName: userdata[0].data().userName,
+            balance: userdata[1].data().balance
           });
         }catch(e){
           console.log(e);
