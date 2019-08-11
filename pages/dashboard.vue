@@ -16,13 +16,13 @@
           <tbody>
             <tr v-for="username in users" :key="username.userName">
               <th>{{ username.userName }}</th>
-              <th><button @click="showModal = true">walletを見る</button></th>
-              <th><button>送る</button></th>
+              <th><button @click="showConfirmModal = true; selectUser = username.id">walletを見る</button></th>
+              <th><button @click="showSendModal = true">送る</button></th>
             </tr>  
           </tbody>
         </table>
-         <button @click="showModal = true">モーダル表示</button>
-        <modal v-if="showModal" @close="showModal = false"></modal>
+        <ConfirmModal v-if="showConfirmModal" @close="showConfirmModal = false"></ConfirmModal>
+        <SendModal v-if="showSendModal" @close="showSendModal = false"></SendModal>
         <Footer/>
       </div>
     </section>
@@ -34,20 +34,24 @@ import { mapGetters } from 'vuex'
 import { auth } from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
 import Footer from '~/components/Footer.vue'
-import Modal from '~/components/Modal.vue'
+import ConfirmModal from '~/components/ConfirmModal.vue'
+import SendModal from '~/components/SendModal.vue'
 import { INIT_USER, INIT_BALANCE,SET_USERDATA, ADD_USER, REMOVE_USER}  from '../store/action-types';
 
 export default {
   data() {
     return {
-      showModal: false
+      showConfirmModal: false,
+      showSendModal: false,
+      selectUser: null
     }
   },
 
   components: {
     AppLogo,
     Footer,
-    Modal
+    ConfirmModal,
+    SendModal
   },
 
  computed: {
