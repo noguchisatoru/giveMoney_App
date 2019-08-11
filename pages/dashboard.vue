@@ -16,11 +16,13 @@
           <tbody>
             <tr v-for="username in users" :key="username.userName">
               <th>{{ username.userName }}</th>
-              <th><button>walletを見る</button></th>
+              <th><button @click="showModal = true">walletを見る</button></th>
               <th><button>送る</button></th>
             </tr>  
           </tbody>
         </table>
+         <button @click="showModal = true">モーダル表示</button>
+        <modal v-if="showModal" @close="showModal = false"></modal>
         <Footer/>
       </div>
     </section>
@@ -32,18 +34,20 @@ import { mapGetters } from 'vuex'
 import { auth } from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
 import Footer from '~/components/Footer.vue'
+import Modal from '~/components/Modal.vue'
 import { INIT_USER, INIT_BALANCE,SET_USERDATA, ADD_USER, REMOVE_USER}  from '../store/action-types';
 
 export default {
   data() {
     return {
-      useruid: auth.currentUser.uid
+      showModal: false
     }
   },
 
   components: {
     AppLogo,
-    Footer
+    Footer,
+    Modal
   },
 
  computed: {
