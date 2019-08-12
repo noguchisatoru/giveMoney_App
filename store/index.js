@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 import { db } from '~/plugins/firebase'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
-import { INIT_USER, INIT_BALANCE, SET_USERDATA, ADD_USER, REMOVE_USER } from './action-types'
+import { INIT_USER, INIT_BALANCE, SET_USERDATA, ADD_USER, SELECT_USERDATA, REMOVE_USER, SEND_WALLET } from './action-types'
 import { DEFAULT_WALLET_AMOUNT } from './definition'
 
 const usersRef = db.collection('users');
@@ -56,6 +56,7 @@ export default () =>
             balanceRef.doc(uid).get()
           ]);
           commit("setUser", {
+            uId: uid,
             userName: userdata[0].data().userName,
             balance: userdata[1].data().balance
           });
@@ -63,6 +64,38 @@ export default () =>
           console.log(e);
         }
       },
+
+      [SELECT_USERDATA]:async({commit},uid) => {
+        try{
+          const selectdata = await Promise.all([
+            usersRef.doc(uid).get(),
+            balanceRef.doc(uid).get()
+          ]);
+          return [uid, selectdata[0].data().userName, selectdata[1].data().balance]
+        }catch(e){
+          console.log(e);
+        }
+      },
+
+      [SEND_WALLET]:firestoreAction(async (context, {wallet, uid}) => {
+        try{
+          const preData = await Promise.all([
+            balanceRef.doc(context.state.user.uId).get(),
+            balanceRef.doc(uid).get()
+          ]);
+          
+          await Promise.all([
+            balanceRef.doc(context.state.user.uId).set({
+              balance: preData[0].data().balance - Number(wallet)
+            }),
+            balanceRef.doc(uid).set({
+              balance: preData[1].data().balance + Number(wallet)              
+            })
+          ]);
+        }catch(e){
+          console.log(e);
+        }
+      }),
       [REMOVE_USER]: firestoreAction((context, key) => {
         usersRef.child(key).remove()
       })

@@ -3,7 +3,8 @@
         <div class="overlay" @click="$emit('close')">
             <div class="panel" @click.stop>
                 <h3>Modal</h3>
-                <p>{{ aaa }} さんようこそ</p>
+                <p>{{ selectdata[1] }} さんの残高</p>
+                <p>{{ selectdata[2] }}</p>
                 <button @click="$emit('close')">閉じる</button>
             </div>
         </div>
@@ -14,8 +15,8 @@
 import { mapGetters } from 'vuex'
 export default {
     props: {
-        aaa:{
-            type: String
+        selectdata:{
+            type: Array
         }
     },
 
