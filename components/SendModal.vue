@@ -3,7 +3,7 @@
         <div class="overlay" @click="$emit('close')">
             <div class="panel" @click.stop>
                 <h3>Modal</h3>
-                <p>{{ user.balance }} さんようこそ</p>
+                <p>{{ aaa }} さんようこそ</p>
                 <button @click="$emit('close')">閉じる</button>
             </div>
         </div>
@@ -13,6 +13,12 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
+    props: {
+        aaa:{
+            type: String
+        }
+    },
+
     computed: {
         ...mapGetters(["user", "users", "balance"])
     },

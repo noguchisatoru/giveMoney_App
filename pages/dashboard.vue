@@ -21,8 +21,8 @@
             </tr>  
           </tbody>
         </table>
-        <ConfirmModal v-if="showConfirmModal" @close="showConfirmModal = false"></ConfirmModal>
-        <SendModal v-if="showSendModal" @close="showSendModal = false"></SendModal>
+        <ConfirmModal v-if="showConfirmModal" @close="showConfirmModal = false" :aaa="selectUser"></ConfirmModal>
+        <SendModal v-if="showSendModal" @close="showSendModal = false" :aaa="selectUser"></SendModal>
         <Footer/>
       </div>
     </section>
@@ -55,7 +55,7 @@ export default {
   },
 
  computed: {
-    ...mapGetters(["user", "users", "balance"])
+    ...mapGetters(["user", "users", "balances"])
   },
 
   methods: {
@@ -67,6 +67,7 @@ export default {
    mounted(){
     this.$store.dispatch(INIT_USER);
     this.$store.dispatch(INIT_BALANCE);
+    console.log(this.user)
   }
 }
 </script>
