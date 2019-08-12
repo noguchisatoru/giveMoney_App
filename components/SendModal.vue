@@ -14,7 +14,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { SEND_WALLET }  from '../store/action-types';
+import { SET_USERDATA, SEND_WALLET }  from '../store/action-types';
 export default {
     data(){
         return {
@@ -32,8 +32,9 @@ export default {
     },
 
     methods: {
-        send(wallet, uid){
-            this.$store.dispatch(SEND_WALLET, {wallet, uid});
+        async send(wallet, uid){
+            await this.$store.dispatch(SEND_WALLET, {wallet, uid});
+            this.$store.dispatch(SET_USERDATA, this.user.uId);
         }
     }
 }
