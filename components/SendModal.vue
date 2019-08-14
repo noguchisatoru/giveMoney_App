@@ -2,10 +2,10 @@
     <transition name="modal">
         <div class="overlay" @click="$emit('close')">
             <div class="panel" @click.stop>
-                <h3>{{ selectdata[1] }}</h3>
+                <h3>{{ selectdata.userName }}</h3>
                  <p>あなたの残高：{{ user.balance }}</p>
                 <input type="number" v-model="sendWallet">
-                <button @click="send(sendWallet,selectdata[0]);$emit('close')">送る</button>
+                <button @click="send(sendWallet, selectdata.uId);$emit('close')">送る</button>
                 <button @click="$emit('close')">閉じる</button>
             </div>
         </div>

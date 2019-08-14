@@ -3,8 +3,8 @@
         <div class="overlay" @click="$emit('close')">
             <div class="panel" @click.stop>
                 <h3>Modal</h3>
-                <p>{{ selectdata[1] }} さんの残高</p>
-                <p>{{ selectdata[2] }}</p>
+                <p>{{ selectdata.userName }} さんの残高</p>
+                <p>{{ selectdata.balance }}</p>
                 <button @click="$emit('close')">閉じる</button>
             </div>
         </div>

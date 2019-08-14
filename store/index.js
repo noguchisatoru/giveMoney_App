@@ -71,7 +71,14 @@ export default () =>
             usersRef.doc(uid).get(),
             balanceRef.doc(uid).get()
           ]);
-          return [uid, selectdata[0].data().userName, selectdata[1].data().balance]
+
+          const selectUserdata = {
+            uId: uid,
+            userName: selectdata[0].data().userName,
+            balance: selectdata[1].data().balance
+          }
+          
+          return selectUserdata;
         }catch(e){
           console.log(e);
         }
