@@ -79,17 +79,23 @@ export default () =>
 
       [SEND_WALLET]:firestoreAction(async (context, {wallet, uid}) => {
         try{
-          const preData = await Promise.all([
-            balanceRef.doc(context.state.user.uId).get(),
-            balanceRef.doc(uid).get()
+          const recieverId = context.state.user.uId;
+          const senderId = uid;
+
+          const getIdData = await Promise.all([
+            balanceRef.doc(recieverId).get(),
+            balanceRef.doc(senderId).get()
           ]);
           
+          const recieverBalance = getIdData[0].data().balance;
+          const senderBalance = getIdData[1].data().balance;
+
           await Promise.all([
-            balanceRef.doc(context.state.user.uId).set({
-              balance: preData[0].data().balance - Number(wallet)
+            balanceRef.doc(recieverId).set({
+              balance: recieverBalance - Number(wallet)
             }),
-            balanceRef.doc(uid).set({
-              balance: preData[1].data().balance + Number(wallet)              
+            balanceRef.doc(senderId).set({
+              balance: senderBalance + Number(wallet)              
             })
           ]);
         }catch(e){
