@@ -92,22 +92,27 @@ export default () =>
           const recieverId = context.state.user.uId;
           const senderId = uid;
 
-          const getIdData = await Promise.all([
-            balanceRef.doc(recieverId).get(),
-            balanceRef.doc(senderId).get()
-          ]);
+          if(recieverId != senderId){
+            const getIdData = await Promise.all([
+              balanceRef.doc(recieverId).get(),
+              balanceRef.doc(senderId).get()
+            ]);
+            
+            const recieverBalance = getIdData[0].data().balance;
+            const senderBalance = getIdData[1].data().balance;
+  
+            await Promise.all([
+              balanceRef.doc(recieverId).set({
+                balance: recieverBalance - Number(wallet)
+              }),
+              balanceRef.doc(senderId).set({
+                balance: senderBalance + Number(wallet)              
+              })
+            ]);
+          }else{
+            alert("自分自身に送ることはできません！");
+          }
           
-          const recieverBalance = getIdData[0].data().balance;
-          const senderBalance = getIdData[1].data().balance;
-
-          await Promise.all([
-            balanceRef.doc(recieverId).set({
-              balance: recieverBalance - Number(wallet)
-            }),
-            balanceRef.doc(senderId).set({
-              balance: senderBalance + Number(wallet)              
-            })
-          ]);
         }catch(e){
           console.log(e);
         }
