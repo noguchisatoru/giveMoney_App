@@ -40,6 +40,8 @@ import SendModal from '~/components/SendModal.vue'
 import { INIT_USER, INIT_BALANCE, SET_USERDATA, ADD_USER, SELECT_USERDATA, LOGOUT_USER}  from '../store/action-types';
 
 export default {
+  middleware: 'authenticated',
+
   data() {
     return {
       showConfirmModal: false,
