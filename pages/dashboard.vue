@@ -83,9 +83,14 @@ export default {
     },
 
     async sendWallet(wallet, uid){
-            await this.$store.dispatch(SEND_WALLET, {wallet, uid});
-            this.$store.dispatch(SET_USERDATA, this.user.uId);
-            this.showSendModal = false
+            if(0 < wallet && wallet < this.user.balance){
+              await this.$store.dispatch(SEND_WALLET, {wallet, uid});
+              this.$store.dispatch(SET_USERDATA, this.user.uId);
+              this.showSendModal = false;
+            }else{
+              alert("残高を確認してください")
+            }
+            
         },
 
     async logout(){
