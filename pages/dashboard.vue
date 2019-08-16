@@ -17,13 +17,24 @@
           <tbody>
             <tr v-for="username in users" :key="username.userName">
               <th>{{ username.userName }}</th>
-              <th><button @click="confirmWallet(username.id)">walletを見る</button></th>
-              <th><button @click="sendWallet(username.id)">送る</button></th>
+              <th><button @click="confirmWalletModal(username.id)">walletを見る</button></th>
+              <th><button @click="sendWalletModal(username.id)">送る</button></th>
             </tr>  
           </tbody>
         </table>
-        <ConfirmModal v-if="showConfirmModal" @close="showConfirmModal = false" :selectdata="selectUser"></ConfirmModal>
-        <SendModal v-if="showSendModal" @close="showSendModal = false" :selectdata="selectUser"></SendModal>
+        <!-- ConfirmModal -->
+        <Modal v-if="showConfirmModal" @close="showConfirmModal = false">
+            <h3>Modal</h3>
+            <p>{{ selectUser.userName }} さんの残高</p>
+            <p>{{ selectUser.balance }}</p>  
+        </Modal>
+        <!-- SendModal -->
+        <Modal v-if="showSendModal" @close="showSendModal = false">
+            <h3>{{ selectUser.userName }}</h3>
+            <p>あなたの残高：{{ user.balance }}</p>
+            <input type="number" v-model="sendAmount">
+            <button @click="sendWallet(sendAmount, selectUser.uId);$emit('close')">送る</button>
+        </Modal>
         <Footer/>
       </div>
     </section>
@@ -35,9 +46,8 @@ import { mapGetters } from 'vuex'
 import { auth } from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
 import Footer from '~/components/Footer.vue'
-import ConfirmModal from '~/components/ConfirmModal.vue'
-import SendModal from '~/components/SendModal.vue'
-import { INIT_USER, INIT_BALANCE, SET_USERDATA, ADD_USER, SELECT_USERDATA, LOGOUT_USER}  from '../store/action-types';
+import Modal from '~/components/Modal.vue'
+import { INIT_USER, INIT_BALANCE, SET_USERDATA, ADD_USER, SELECT_USERDATA, SEND_WALLET, LOGOUT_USER}  from '../store/action-types';
 
 export default {
   middleware: 'authenticated',
@@ -46,15 +56,15 @@ export default {
     return {
       showConfirmModal: false,
       showSendModal: false,
-      selectUser: []
+      selectUser: [],
+      sendAmount: 0
     }
   },
 
   components: {
     AppLogo,
     Footer,
-    ConfirmModal,
-    SendModal
+    Modal
   },
 
  computed: {
@@ -62,15 +72,21 @@ export default {
   },
 
   methods: {
-    async confirmWallet(uid){
+    async confirmWalletModal(uid){
       this.selectUser = await this.$store.dispatch(SELECT_USERDATA, uid);
       this.showConfirmModal = true;
     },
     
-    async sendWallet(uid){
+    async sendWalletModal(uid){
       this.selectUser = await this.$store.dispatch(SELECT_USERDATA, uid);
       this.showSendModal = true;
     },
+
+    async sendWallet(wallet, uid){
+            await this.$store.dispatch(SEND_WALLET, {wallet, uid});
+            this.$store.dispatch(SET_USERDATA, this.user.uId);
+            this.showSendModal = false
+        },
 
     async logout(){
       this.$router.push("/");

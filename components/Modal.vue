@@ -2,44 +2,12 @@
     <transition name="modal">
         <div class="overlay" @click="$emit('close')">
             <div class="panel" @click.stop>
-                <h3>{{ selectdata.userName }}</h3>
-                 <p>あなたの残高：{{ user.balance }}</p>
-                <input type="number" v-model="sendWallet">
-                <button @click="send(sendWallet, selectdata.uId);$emit('close')">送る</button>
+                <slot></slot>
                 <button @click="$emit('close')">閉じる</button>
             </div>
         </div>
     </transition>
 </template>
-
-<script>
-import { mapGetters } from 'vuex'
-import { SET_USERDATA, SEND_WALLET }  from '../store/action-types';
-export default {
-    data(){
-        return {
-            sendWallet:0
-        }
-    },
-    props: {
-        selectdata:{
-            type: Object
-        }
-    },
-
-    computed: {
-        ...mapGetters(["user", "users", "balance"])
-    },
-
-    methods: {
-        async send(wallet, uid){
-            await this.$store.dispatch(SEND_WALLET, {wallet, uid});
-            this.$store.dispatch(SET_USERDATA, this.user.uId);
-        }
-    }
-}
-</script>
-
 
 <style>
 .overlay {
