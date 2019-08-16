@@ -16,7 +16,7 @@ import { mapGetters } from 'vuex'
 export default {
     props: {
         selectdata:{
-            type: Array
+            type: Object
         }
     },
 
