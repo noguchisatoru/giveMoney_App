@@ -16,11 +16,13 @@
           <tbody>
             <tr v-for="username in users" :key="username.userName">
               <th>{{ username.userName }}</th>
-              <th><button>walletを見る</button></th>
-              <th><button>送る</button></th>
+              <th><button @click="confirmWallet(username.id)">walletを見る</button></th>
+              <th><button @click="sendWallet(username.id)">送る</button></th>
             </tr>  
           </tbody>
         </table>
+        <ConfirmModal v-if="showConfirmModal" @close="showConfirmModal = false" :selectdata="selectUser"></ConfirmModal>
+        <SendModal v-if="showSendModal" @close="showSendModal = false" :selectdata="selectUser"></SendModal>
         <Footer/>
       </div>
     </section>
@@ -32,27 +34,39 @@ import { mapGetters } from 'vuex'
 import { auth } from '~/plugins/firebase'
 import AppLogo from '~/components/AppLogo.vue'
 import Footer from '~/components/Footer.vue'
-import { INIT_USER, INIT_BALANCE,SET_USERDATA, ADD_USER, REMOVE_USER}  from '../store/action-types';
+import ConfirmModal from '~/components/ConfirmModal.vue'
+import SendModal from '~/components/SendModal.vue'
+import { INIT_USER, INIT_BALANCE, SET_USERDATA, ADD_USER, SELECT_USERDATA, REMOVE_USER}  from '../store/action-types';
 
 export default {
   data() {
     return {
-      useruid: auth.currentUser.uid
+      showConfirmModal: false,
+      showSendModal: false,
+      selectUser: []
     }
   },
 
   components: {
     AppLogo,
-    Footer
+    Footer,
+    ConfirmModal,
+    SendModal
   },
 
  computed: {
-    ...mapGetters(["user", "users", "balance"])
+    ...mapGetters(["user", "users", "balances"])
   },
 
   methods: {
-    changeDisplay(){
-      this.isActive = !this.isActive;
+    async confirmWallet(uid){
+      this.selectUser = await this.$store.dispatch(SELECT_USERDATA, uid);
+      this.showConfirmModal = true;
+    },
+    
+    async sendWallet(uid){
+      this.selectUser = await this.$store.dispatch(SELECT_USERDATA, uid);
+      this.showSendModal = true;
     }
   },
 
