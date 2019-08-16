@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 import { db } from '~/plugins/firebase'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
-import { INIT_USER, INIT_BALANCE, SET_USERDATA, ADD_USER, SELECT_USERDATA, REMOVE_USER, SEND_WALLET } from './action-types'
+import { INIT_USER, INIT_BALANCE, SET_USERDATA, ADD_USER, SELECT_USERDATA, LOGOUT_USER, SEND_WALLET } from './action-types'
 import { DEFAULT_WALLET_AMOUNT } from './definition'
 
 const usersRef = db.collection('users');
@@ -18,6 +18,9 @@ export default () =>
       ...vuexfireMutations,
       setUser(state, user){
         state.user = user;
+      },
+      logoutUser(state){
+        state.user = null;
       }
     },
     getters: {
@@ -109,8 +112,8 @@ export default () =>
           console.log(e);
         }
       }),
-      [REMOVE_USER]: firestoreAction((context, key) => {
-        usersRef.child(key).remove()
-      })
+      [LOGOUT_USER]: ({commit}) => {
+        commit("logoutUser");
+      }
     }
   })

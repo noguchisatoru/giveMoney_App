@@ -3,6 +3,7 @@
       <div>
         <AppLogo/>
         <p>{{ user.userName }} さんようこそ</p>
+        <button @click="logout()">ログアウト</button>
         <p>残高：{{ user.balance }}</p>
         <h1>ユーザ一覧</h1>
         <table>
@@ -36,7 +37,7 @@ import AppLogo from '~/components/AppLogo.vue'
 import Footer from '~/components/Footer.vue'
 import ConfirmModal from '~/components/ConfirmModal.vue'
 import SendModal from '~/components/SendModal.vue'
-import { INIT_USER, INIT_BALANCE, SET_USERDATA, ADD_USER, SELECT_USERDATA, REMOVE_USER}  from '../store/action-types';
+import { INIT_USER, INIT_BALANCE, SET_USERDATA, ADD_USER, SELECT_USERDATA, LOGOUT_USER}  from '../store/action-types';
 
 export default {
   data() {
@@ -67,6 +68,12 @@ export default {
     async sendWallet(uid){
       this.selectUser = await this.$store.dispatch(SELECT_USERDATA, uid);
       this.showSendModal = true;
+    },
+
+    async logout(){
+      this.$router.push("/");
+      await auth.signOut();
+      this.$store.dispatch(LOGOUT_USER);
     }
   },
 
