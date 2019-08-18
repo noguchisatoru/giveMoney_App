@@ -83,7 +83,7 @@ export default {
     },
 
     async sendWallet(wallet, uid){
-            if(0 < wallet && wallet < this.user.balance){
+            if(wallet > 0 && wallet < this.user.balance){
               await this.$store.dispatch(SEND_WALLET, {wallet, uid});
               this.$store.dispatch(SET_USERDATA, this.user.uId);
               this.showSendModal = false;
