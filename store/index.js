@@ -92,7 +92,7 @@ export default () =>
           const recieverId = context.state.user.uId;
           const senderId = uid;
 
-          if(recieverId != senderId){
+          if(recieverId !== senderId){
             const getIdData = await Promise.all([
               balanceRef.doc(recieverId).get(),
               balanceRef.doc(senderId).get()
