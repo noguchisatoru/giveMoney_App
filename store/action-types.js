@@ -1,0 +1,7 @@
+export const INIT_USER = 'INIT_USER'
+export const INIT_BALANCE = 'INIT_BALANCE'
+export const ADD_USER = 'ADD_USER'
+export const SET_USERDATA = 'SET_USERDATA'
+export const SELECT_USERDATA = 'SELECT_USERDATA'
+export const LOGOUT_USER = 'LOGOUT_USER'
+export const SEND_WALLET = 'SEND_WALLET'
