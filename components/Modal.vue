@@ -2,30 +2,12 @@
     <transition name="modal">
         <div class="overlay" @click="$emit('close')">
             <div class="panel" @click.stop>
-                <h3>Modal</h3>
-                <p>{{ selectdata.userName }} さんの残高</p>
-                <p>{{ selectdata.balance }}</p>
+                <slot></slot>
                 <button @click="$emit('close')">閉じる</button>
             </div>
         </div>
     </transition>
 </template>
-
-<script>
-import { mapGetters } from 'vuex'
-export default {
-    props: {
-        selectdata:{
-            type: Array
-        }
-    },
-
-    computed: {
-        ...mapGetters(["user", "users", "balance"])
-    },
-}
-</script>
-
 
 <style>
 .overlay {
